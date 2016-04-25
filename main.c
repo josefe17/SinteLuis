@@ -9,6 +9,9 @@
 #include <xc.h>
 #include "main.h"
 
+#define LED PORTCbits.RC6
+#define LED_TRIS TRISCbits.TRISC6
+
 /*Variables*/
 unsigned char  rom_index;       //Waveform rom counter
 unsigned char* rom_pointer;     //Waveform rom pointer
@@ -47,6 +50,9 @@ void main(void){
     osc_init();
     port_init();
 
+    LED_TRIS=0;
+    LED=0;
+
     /*Variables initialization*/
     rom_pointer = (unsigned char*) output_off;
     aux_rom_pointer = (unsigned char*) output_off;
@@ -76,6 +82,7 @@ void main(void){
                last_pressed = OUTPUT_OFF_VALUE;
                freq_index = OUTPUT_OFF_FREQ_INDEX;
                mode=KEY_MODE;
+               LED=0;////////////////////////////////////////////////////////////////////
                           
            //aux_rom_pointer=set_waveform();
            //freq_index=9; //NO AFINADA AUN 5         //Ejecuta teclado
@@ -91,13 +98,16 @@ void main(void){
             }
 
             if (last_pressed >= MAX_NOTES) { //If no pressed key, shut off output (when zero crossing)
+                //LED=0;////////////////////////////////////////////////////////////////////////
                 aux_rom_pointer = (unsigned char*) output_off;
                 freq_index= OUTPUT_OFF_FREQ_INDEX;
+
             } else { //Else play read key
+                //LED=1;///////////////////////////////////////////////////////////////////
                 aux_rom_pointer=set_waveform();
                 freq_index = last_pressed;
              }
-
+        
         }
 
            
@@ -112,11 +122,13 @@ void main(void){
        }
        if(SOURCE){
            if (mode!=SONG_MODE){
+               timer2_init();
                mode=SONG_MODE;
-               next_player_status = START;
+               next_player_status = SILENCE;
                aux_rom_pointer = (unsigned char*) output_off;
                note_index = set_song();
                song_freq_buffer = OUTPUT_OFF_FREQ_INDEX;
+               timer2_interrupts_start();
            }
            player_status=next_player_status;
            switch (player_status){
@@ -215,11 +227,13 @@ void osc_init(void){
     /*Port configuration*/
     TRISA=0b00111111; //port A a keyboard input
     TRISB=255; //Port B as Keyboard input
+    ADCON1bits.PCFG=0b1111; //No analog inputs
     TRISE=0b00000011;
     TRISD=0;   //Half D port as DAC output
     TRISCbits.TRISC0=1;  //Port C0 as loop mode input ----
     TRISCbits.TRISC1=1;  //Port C1 as song selection input
     TRISCbits.TRISC2=1;
+
 }
 
 void timer1_init (void){    //Freq gen
@@ -312,7 +326,7 @@ unsigned char leeTeclado(void) {
 }
 
 
-/*
+
 unsigned char leeTecla(unsigned char tecla) {
     switch (tecla) {
         case 0: return KEY1;
@@ -335,16 +349,16 @@ unsigned char leeTecla(unsigned char tecla) {
 
     }
 }
-*/
 
+/*
 unsigned char leeTecla(unsigned char tecla) {
     switch (tecla) {
-        case 0:{ 
+        case DO:{
             if (KEY1) return 1;
             else return 0;            
         }
-        case 5:{
-            if (KEY6) return 1;
+        case MI:{
+            if (KEY5) return 1;
             else return 0;
         }
         case 9:{
@@ -355,7 +369,7 @@ unsigned char leeTecla(unsigned char tecla) {
 
     }
 }
-
+*/
 void interrupt ISR(void){
     if (PIR2bits.CCP2IF){
         PIR2bits.CCP2IF=0;  //Clear flag

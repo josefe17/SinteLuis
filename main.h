@@ -47,7 +47,7 @@ extern "C" {
 
 // CONFIG4L
 #pragma config STVREN = ON      // Stack Full/Underflow Reset Enable bit (Stack full/underflow will cause Reset)
-#pragma config LVP = ON         // Single-Supply ICSP Enable bit (Single-Supply ICSP enabled)
+#pragma config LVP = OFF         // Single-Supply ICSP Enable bit (Single-Supply ICSP disabled)
 #pragma config XINST = OFF      // Extended Instruction Set Enable bit (Instruction set extension and Indexed Addressing mode disabled (Legacy mode))
 
 // CONFIG5L
@@ -128,6 +128,25 @@ extern "C" {
 #define KEY14 PORTAbits.RA5
 #define KEY15 PORTEbits.RE0
 #define KEY16 PORTEbits.RE1
+
+#define DO 0
+#define DO_UP 1
+#define RE 2
+#define RE_UP 3
+#define MI 4
+#define FA 5
+#define FA_UP 6
+#define SOL 7
+#define SOL_UP 8
+#define LA 9
+#define LA_UP 10
+#define SI 11
+#define DO2 12
+#define DO2_UP 13
+#define RE2 14
+#define RE2_UP 15
+#define MI2 16
+
 
 /*Constants*/
 //Musical sequence
