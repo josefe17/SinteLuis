@@ -75,7 +75,7 @@ void main(void){
         }
          */
 
-       if (!SOURCE && !SONG) {//READ KEYBOARD
+       if (!SOURCE) {//READ KEYBOARD
            if (mode!=KEY_MODE) {
                timer2_stop();
                aux_rom_pointer = (unsigned char *) output_off;
@@ -110,16 +110,16 @@ void main(void){
         
         }
 
-           
+        /*
        if(!SOURCE && SONG){//UART
            if (mode!=MIDI_MODE){
                mode=MIDI_MODE;
                timer2_stop();
            }
            aux_rom_pointer=set_waveform();
-           freq_index=7;     //No afinada ni compilado   //Ejecuta teclado
-           
+           freq_index=7;     //No afinada ni compilado   //Ejecuta teclado           
        }
+         */
        if(SOURCE){
            if (mode!=SONG_MODE){
                timer2_init();

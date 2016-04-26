@@ -160,8 +160,8 @@ const int feliz_en_tu_dia[] = {128, 128, 128, 128, 128, 128, 128, 128, 128, 128,
 
 //freq to period ROM
 //Man tuned
-const unsigned char notes_periodsH[]={ 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0 };
-const unsigned char notes_periodsL[]={ 163, 136, 110, 86, 64, 42, 22, 63, 45, 224, 12, 253, 239, 225, 213, 201, 190 };
+const unsigned char notes_periodsH[]={ 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+const unsigned char notes_periodsL[]={ 163, 136, 110, 86, 64, 42, 22, 3, 241, 224, 208, 193, 178, 165, 152, 140, 129 };
 
 //const unsigned char notes_periodsH[]={ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 //const unsigned char notes_periodsL[]={239,225,213,201,189,179,169,159,150,142,134,126,119,112,106};
