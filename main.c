@@ -82,7 +82,7 @@ void main(void){
                last_pressed = OUTPUT_OFF_VALUE;
                freq_index = OUTPUT_OFF_FREQ_INDEX;
                mode=KEY_MODE;
-               LED=0;////////////////////////////////////////////////////////////////////
+               //LED=0;
                           
            //aux_rom_pointer=set_waveform();
            //freq_index=9; //NO AFINADA AUN 5         //Ejecuta teclado
@@ -122,22 +122,17 @@ void main(void){
          */
        if(SOURCE){
            if (mode!=SONG_MODE){
-               timer2_init();
-               mode=SONG_MODE;
-               next_player_status = SILENCE;
+               mode = SONG_MODE;
+               song_freq_buffer = OUTPUT_OFF_FREQ_INDEX;                              
+               next_player_status = START;
                aux_rom_pointer = (unsigned char*) output_off;
                note_index = set_song();
-               song_freq_buffer = OUTPUT_OFF_FREQ_INDEX;
+               timer2_init();
                timer2_interrupts_start();
            }
            player_status=next_player_status;
            switch (player_status){
-               case START:{
-                    timer2_init();
-                    aux_rom_pointer = (unsigned char*) output_off;
-                    note_index = set_song();
-                    song_freq_buffer=OUTPUT_OFF_FREQ_INDEX;
-                    timer2_interrupts_start();
+               case START:{                    
                    if ((*note_index)<OUTPUT_OFF_VALUE){
                        next_player_status=PLAY;
                        break;
@@ -147,7 +142,7 @@ void main(void){
                        break;
                     }
                    if ((*note_index)> OUTPUT_OFF_VALUE) {
-                       next_player_status = START;
+                       next_player_status = END;
                        break;
                     }
                     break;
@@ -164,7 +159,7 @@ void main(void){
                         break;
                     }
                     if ((*note_index) > OUTPUT_OFF_VALUE) {
-                        next_player_status = START;
+                        next_player_status = END;
                         break;
                     }
                    break;
@@ -181,7 +176,7 @@ void main(void){
                         break;
                     }
                     if ((*note_index) > OUTPUT_OFF_VALUE) {
-                        next_player_status = START;
+                        next_player_status = END;
                         break;
                     }
                    break;
@@ -199,7 +194,7 @@ void main(void){
                         break;
                     }
                     if ((*note_index) > OUTPUT_OFF_VALUE) {
-                        next_player_status = START;
+                        next_player_status = END;
                         break;
                     }
                     break;
@@ -272,10 +267,10 @@ void timer2_init(void){
 }
 
 void timer2_interrupts_start(void) {
-    IPR1bits.TMR2IP = 0; //Low prior interrupt
-    PIE1bits.TMR2IE = 1; //Timer 2 interrupt
+    IPR1bits.TMR2IP = 0; //Low prior interrupt    
     PIR1bits.TMR2IF = 0;
     T2CONbits.TMR2ON = 1;
+    PIE1bits.TMR2IE = 1; //Timer 2 interrupt
 }
 
 void timer2_stop(void) {
